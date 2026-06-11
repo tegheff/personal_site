@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credits</title>
+    <style>
+        /* Basic reset and black background */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* The start button */
+        #startButton {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: 1px solid white;
+            border-radius: 5px;
+            z-index: 10;
+        }
+
+        #startButton:hover {
+            background-color: #555;
+        }
+
+        /* The text container */
+        #creditText {
+            opacity: 0;
+            text-align: center;
+            position: absolute;
+        }
+
+        /* Styling for the roles / labels */
+        .role {
+            font-size: 1.2rem;
+            font-weight: normal;
+            margin-bottom: 15px;
+            color: #dddddd;
+        }
+
+        /* Styling for the names / main entities */
+        .name {
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin: 5px 0;
+            letter-spacing: 2px;
+        }
+
+        /* Flex container to hold the logo and its side text together */
+        .logo-container {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px; /* Space between logo and text */
+            margin-top: 5px;
+        }
+
+        /* Image sizing for replaced logo text (increased from 55px to 75px) */
+        .logo-img {
+            height: 75px;
+            width: 133px;
+            vertical-align: middle;
+            object-fit: contain;
+        }
+
+        /* Side text layout styling */
+        .logo-text-side {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: left;
+            line-height: 1.2;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* --- ROLLING CREDITS CSS --- */
+        #rollingWrapper {
+            position: absolute;
+            bottom: 10%;
+            width: 100%;
+            height: 80vh;
+            display: none;
+            overflow: hidden;
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%);
+        }
+
+        #rollingCredits {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+        }
+
+        .roll-block {
+            margin-bottom: 50px;
+        }
+
+        /* --- CLASSIC CAST SIDE-BY-SIDE STYLES --- */
+        .cast-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 4px;
+            margin-top: 40px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .cast-row {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+            font-size: 1.3rem;
+        }
+
+        .character {
+            text-align: right;
+            width: 45%;
+            padding-right: 20px;
+            color: #c8c8c8;
+        }
+
+        .actor {
+            text-align: left;
+            width: 45%;
+            padding-left: 20px;
+            font-weight: bold;
+        }
+
+        /* --- NEW: TOP GUN STYLE MUSIC CREDIT STYLES --- */
+        .song-block {
+            margin: 35px 0;
+            text-align: center;
+        }
+
+        .song-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .song-details {
+            font-size: 1.1rem;
+            color: #dddddd;
+            margin: 4px 0;
+            font-weight: normal;
+        }
+
+        /* --- NEW: FLASHING SKIP PROMPT STYLES --- */
+        #skipPrompt {
+            position: absolute;
+            bottom: 30px;
+            right: 40px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 1.5px;
+            z-index: 20;
+            display: none; /* Hidden by default */
+            animation: promptBlink 1.6s infinite ease-in-out;
+            user-select: none;
+        }
+
+        @keyframes promptBlink {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 1; }
+        }
+
+        /* --- NEW: VERTICAL ONE-AFTER-ANOTHER STACK --- */
+        .image-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px; /* Space between each full-sized image */
+            margin-top: 30px;
+        }
+
+        .full-credit-img {
+            max-width: 85%; /* Ensures responsiveness on smaller displays */
+            width: 650px;   /* Cinematic full-size target */
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #222;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.9);
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgAudio" src="background.mp3"></audio>
+
+    <button id="startButton">Start Credits</button>
+    <div id="creditText"></div>
+    
+    <div id="skipPrompt">PRESS ANY KEY TO SKIP...</div>
+
+    <div id="rollingWrapper">
+        <div id="rollingCredits">
+            
+            <div class="roll-block">
+                <div class="role">A Portfolio Website Made by</div>
+                <div class="name">YOURS TRULY</div>
+            </div> <br><br>
+            <div class="roll-block">
+                <div class="role">Memes & Ideas Conjured by</div>
+                <div class="name">TEGAN HEFFERNAN</div>
+            </div> <br><br>
+
+            <div class="roll-block">
+                <div class="role">Personal Catering</div>
+                <div class="name">UC Subway</div>
+                <div class="name">Tim Hortons Iced Capps</div>
+            </div> <br><br>
+
+            <div class="roll-block">
+                <div class="role">Least Favourite Social Media</div>
+                <div class="name">LINKEDIN BY MICROSOFT</div>
+            </div>
+
+            <br><br><br><br><br><br>
+            <div class="roll-block">
+                <div class="cast-title">Cast</div>
+
+                <div class="cast-row">
+                    <div class="character">Email Tester #1</div>
+                    <div class="actor">Ben Leinweber</div>
+                </div>
+
+                <div class="cast-row">
+                    <div class="character">Email Tester #2</div>
+                    <div class="actor">Achebe Culpepper</div>
+                </div>
+
+                <div class="cast-row">
+                    <div class="character">Email Tester #3</div>
+                    <div class="actor">Yasin Razvi</div>
+                </div>
+
+                <div class="cast-row">
+                    <div class="character">Email Tester #4</div>
+                    <div class="actor">Nathan Finley</div>
+                </div>
+            <br>
+                <div class="cast-row">
+                    <div class="character">Mobile Tester</div>
+                    <div class="actor">My iPhone 11 (RIP)</div>
+                </div>
+            <br> 
+                <div class="cast-row">
+                    <div class="character">Donkey Kong</div>
+                    <div class="actor">Donkey Kong</div>
+                </div>
+                <div class="cast-row">
+                    <div class="character">Michael De Santa</div>
+                    <div class="actor">Ned Luke</div>
+                </div>
+                <div class="cast-row">
+                    <div class="character">Robert Robertson</div>
+                    <div class="actor">Aaron Paul</div>
+                </div>
+            </div>
+            <br><br><br><br><br><br>
+            <div class="roll-block">
+                <div class="cast-title">Music</div>
+                
+                <div class="song-block">
+                    <div class="song-title">"Dance - No Heroes"</div>
+                    <div class="song-details">From the video game Dispatch</div>
+                    <div class="song-details">Written & Composed by Andrew Arcadi & Skyler Barto</div>
+                    <div class="song-details">Courtesy of Critical Role</div>
+                    <br><br><br>
+                    <div class="song-title">"Greyhound"</div>
+                    <div class="song-details">From the video game Grand Theft Auto 5</div>
+                    <div class="song-details">Written & Composed by Tangerine Dream</div>
+                    <div class="song-details">Courtesy of Rockstar Games</div>
+                    <br><br><br>
+                    <div class="song-title">"Simian Segue"</div>
+                    <div class="song-details">From the videogame Donkey Kong Country</div>
+                    <div class="song-details">Written & Composed by David Wise</div>
+                    <div class="song-details">Courtesy of Nintendo</div>
+                </div>
+
+            </div>
+            <br><br><br><br><br><br>
+
+            <div class="roll-block">
+                <div class="role">Huge shoutout to:</div>
+                <div class="name">Achebe Culpepper & Kayden Nguyen</div><br>
+                <div class="role">for always supporting my dreams, even during the toughest of times.</div>
+            </div>
+            <br><br><br><br><br><br>
+            <div class="roll-block">
+                <div class="role">If your name is</div>
+                <div class="name">ENGG*2450 Electric Circuits</div><br>
+                <div class="role">please get out of my face.</div>
+            </div>
+            <br><br><br><br><br><br>
+            
+            <div class="roll-block" id="lastTextBlock">
+                <div class="role">Huge Shoutout to</div>
+                <div class="name">LEGO</div><br>
+                <div class="role">for instilling the beauty of engineering into me as a wee lad.</div>
+            </div>
+
+            <br><br><br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br>    
+            
+            <div class="roll-block">
+                <div class="name">First Year</div>
+                <div class="image-stack">
+                    <img src="collage/firstYear/1.jpg" alt="First Year 1" class="full-credit-img">
+                    <img src="collage/firstYear/2.jpg" alt="First Year 2" class="full-credit-img">
+                    <img src="collage/firstYear/3.jpg" alt="First Year 3" class="full-credit-img">
+                    <img src="collage/firstYear/4.jpg" alt="First Year 4" class="full-credit-img">
+                    <img src="collage/firstYear/5.jpg" alt="First Year 5" class="full-credit-img">
+                    <img src="collage/firstYear/6.jpg" alt="First Year 6" class="full-credit-img">
+                    <img src="collage/firstYear/7.jpg" alt="First Year 7" class="full-credit-img">
+                    <img src="collage/firstYear/8.jpg" alt="First Year 8" class="full-credit-img">
+                    <img src="collage/firstYear/9.jpg" alt="First Year 9" class="full-credit-img">
+                </div>
+            </div>
+
+            <br><br><br><br><br><br>
+
+            <div class="roll-block">
+                <div class="name">Second Year</div>
+                <div class="image-stack">
+                    <img src="collage/secondYear/1.jpg" alt="Second Year 1" class="full-credit-img">
+                    <img src="collage/secondYear/2.jpg" alt="Second Year 2" class="full-credit-img">
+                    <img src="collage/secondYear/3.jpg" alt="Second Year 3" class="full-credit-img">
+                    <img src="collage/secondYear/4.jpg" alt="Second Year 4" class="full-credit-img">
+                </div>
+            </div>
+    <br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br>
+                        
+            <div class="roll-block" id="trueFinalBlock">
+                <div class="role">Thank you Mom, Dad, and Avery for always believing in me and supporting me through the ups and downs.</div>
+            <br>
+                <div class="role">I love you guys so much <3</div>
+            </div>
+
+            <div style="height: 200px;"></div> 
+        </div>
+    </div>
+
+    <script>
+        // --- 1. SETTINGS & TIMING ---
+        const redirectDestination = "about.html"; // CHANGE THIS to your next HTML document
+        
+        const initialDelay = 7200;  
+        const fadeInTime = 0;    
+        const displayTime = 2150;   
+        const fadeOutTime = 1350;   
+        const blackTime = 200;      
+
+        const textSpeed = 60;       // Smooth slow roll for text content
+        const imageSpeed = 110;     // Accelerated fast scroll for images
+
+        // --- 2. CREDITS ENTRIES ---
+        const creditsData = [
+            `
+                <div class="role">Main Site Coding</div>
+                <div class="name">TEGAN HEFFERNAN</div>
+            `,
+            `
+                <div class="role">Site Design Inspiration</div>
+                <div class="name">TOOPLATE</div>
+            `,
+            `
+                <div class="role">Email Handling</div>
+                <div class="name">EMAIL JS</div>
+            `,
+            `
+                <div class="role">Right Hand Man</div>
+                <div class="name">GOOGLE GEMINI</div>
+            `,
+            `
+                <div class="role">Hosting</div>
+                <div class="name">GITHUB PAGES</div>
+            `,
+            `
+                <div class="role">Domain Purchased From</div>
+                <div class="name">GODADDY.COM</div>
+            `,
+            `
+                <div class="role">IDE</div>
+                <div class="name">VISUAL STUDIO CODE</div>
+            `,
+            `
+                <div class="role">Analytics Handled by</div>
+                <div class="name">GOOGLE</div>
+            `,
+            `
+                <div class="role">Credits Heavily Inspired by</div>
+                <div class="logo-container">
+                    <img src="images/dispatch.png" alt="Dispatch" class="logo-img">
+                    <div class="logo-text-side">A Game By<br>Adhoc Studio</div>
+                </div>
+            `
+        ];
+
+        // --- 3. THE LOGIC ---
+        const startButton = document.getElementById('startButton');
+        const creditText = document.getElementById('creditText');
+        const bgAudio = document.getElementById('bgAudio');
+        
+        const rollingWrapper = document.getElementById('rollingWrapper');
+        const rollingCredits = document.getElementById('rollingCredits');
+        const skipPrompt = document.getElementById('skipPrompt');
+
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+        // --- NEW: SKIP LISTENER ---
+        document.addEventListener('keydown', () => {
+            // Only redirect if the prompt has appeared on screen
+            if (skipPrompt.style.display === 'block') {
+                window.location.href = redirectDestination;
+            }
+        });
+
+        startButton.addEventListener('click', async () => {
+            startButton.style.display = 'none';
+            bgAudio.play();
+
+            await sleep(initialDelay); 
+
+            for (let i = 0; i < creditsData.length; i++) {
+                
+                creditText.innerHTML = creditsData[i];
+
+                // FADE IN
+                creditText.style.transition = `opacity ${fadeInTime}ms ease-in-out`;
+                creditText.style.opacity = 1;
+                await sleep(fadeInTime); 
+
+                // STAY ON SCREEN
+                await sleep(displayTime);
+
+                // FADE OUT
+                creditText.style.transition = `opacity ${fadeOutTime}ms ease-in-out`;
+                creditText.style.opacity = 0;
+                await sleep(fadeOutTime); 
+
+                // BLACK SCREEN DELAY
+                if (i < creditsData.length - 1) {
+                    await sleep(blackTime);
+                }
+            }
+
+            // --- INTERMISSION: SHOW SKIP PROMPT ---
+            skipPrompt.style.display = 'block';
+
+            // --- 4. TWO-PHASE ROLLING CREDITS RUNTIME ---
+            rollingCredits.style.transition = 'none';
+            rollingWrapper.style.display = 'block';
+            
+            const containerHeight = rollingWrapper.clientHeight;
+
+            // Set initial position completely off-screen at bottom
+            rollingCredits.style.transform = `translateY(${containerHeight}px)`;
+            
+            await sleep(50); 
+
+            // Track target coordinates for Phase 1
+            const lastTextBlock = document.getElementById('lastTextBlock');
+            const lastTextBottomOffset = lastTextBlock.offsetTop + lastTextBlock.offsetHeight;
+            
+            // phase1TargetY is where the bottom of the LEGO block goes past the top viewport frame (-60px buffer for gradient mask)
+            const phase1TargetY = -(lastTextBottomOffset + 60);
+            const phase1Distance = containerHeight - phase1TargetY;
+            const phase1DurationMs = (phase1Distance / textSpeed) * 1000;
+
+            // Set up our dark-zone interception event listener
+            rollingCredits.addEventListener('transitionend', function speedShiftHandler(e) {
+                if (e.propertyName !== 'transform') return;
+                rollingCredits.removeEventListener('transitionend', speedShiftHandler);
+
+                // Phase 2: Start accelerated scrolling and stop at the trueFinalBlock
+                const trueFinalBlock = document.getElementById('trueFinalBlock');
+                
+                // Calculate position to center the final block vertically in the wrapper
+                const finalY = (containerHeight / 2) - (trueFinalBlock.offsetTop + (trueFinalBlock.offsetHeight / 2));
+                
+                const phase2Distance = phase1TargetY - finalY;
+                
+                if (phase2Distance > 0) {
+                    const phase2DurationMs = (phase2Distance / imageSpeed) * 1000;
+                    rollingCredits.style.transition = `transform ${phase2DurationMs}ms linear`;
+                    rollingCredits.style.transform = `translateY(${finalY}px)`;
+
+                    // NEW: Wait for Phase 2 to finish, delay 5 seconds, then redirect
+                    rollingCredits.addEventListener('transitionend', function finalEndHandler(e2) {
+                        if (e2.propertyName !== 'transform') return;
+                        rollingCredits.removeEventListener('transitionend', finalEndHandler);
+
+                        setTimeout(() => {
+                            window.location.href = redirectDestination;
+                        }, 30000);
+                    });
+                }
+            });
+
+            // Fire Phase 1
+            rollingCredits.style.transition = `transform ${phase1DurationMs}ms linear`;
+            rollingCredits.style.transform = `translateY(${phase1TargetY}px)`;
+        });
+    </script>
+</body>
+</html>
